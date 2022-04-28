@@ -1,4 +1,5 @@
 use std::{env};
+use regex::Regex;
 
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -21,11 +22,22 @@ fn main() {
         first = args[0].split(operation_char).nth(0).unwrap().to_string();
         operator = operation_char;
         second = args[0].split(operation_char).nth(1).unwrap().to_string();
-        let first_number = first.parse::<f32>().unwrap();
-        let second_number = second.parse::<f32>().unwrap();
+   
 
-        let result = operate(operator, first_number, second_number);
-        println!("{}", output(first_number, operator, second_number, result));
+        // Check if digits were passed
+        let re = Regex::new(r"^\d[0-9]").unwrap();
+        
+        if re.is_match(&first) && re.is_match(&second)
+        {
+            let first_number = first.parse::<f32>().unwrap();
+            let second_number = second.parse::<f32>().unwrap();
+    
+            let result = operate(operator, first_number, second_number);
+            println!("{}", output(first_number, operator, second_number, result));
+        } else {
+
+            panic!("A valid digit from 0-9 must be provided.");
+        }
 
         }
 
@@ -41,13 +53,21 @@ fn main() {
             first = args[0].to_string();
             operator = args[1].chars().next().unwrap();
             second = args[2].to_string();
-            let first_number = first.parse::<f32>().unwrap();
-            let second_number = second.parse::<f32>().unwrap();
-    
-            println!("Operation: {operator}");
-    
-            let result = operate(operator, first_number, second_number);
-            println!("{}", output(first_number, operator, second_number, result));
+             // Check if digits were passed
+             let re = Regex::new(r"^\d[0-9]").unwrap();
+
+             if re.is_match(&first) && re.is_match(&second)
+             {
+             let first_number = first.parse::<f32>().unwrap();
+             let second_number = second.parse::<f32>().unwrap();
+     
+             println!("Operation: {operator}");
+     
+             let result = operate(operator, first_number, second_number);
+             println!("{}", output(first_number, operator, second_number, result));
+             } else {
+                 panic!("A valid digit from 0-9 must be provided.");
+             }
         }
 
         // all the other cases
